@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Phiếu nhập kho</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;   
+        }
+
+        .search {
+            width: 40vw;
+            height: 150px;
+            text-align: center;
+        }
+
+        .search>fieldset {
+            border: 1px solid black;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .search>fieldset>div {
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        /* .search>fieldset>div>input {
+            width: 70%;
+        } */
+
+        .search>fieldset>div>select {
+            width: 70%;
+        }
+
+        /* css cho bảng nhập liệu */
+
+        .insert {
+            width: 40vw;
+            height: 220px;
+            text-align: center;
+        }
+
+        .insert-frame {
+            border: 1px solid black;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        legend {
+            font-size: 35px;
+        }
+
+        .receipt-id, .shipper-id, .ware-id {
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        .receipt-id>input {
+            width: 70%;
+            height: 20px;
+        }
+        .ware-id>select,
+        .shipper-id>select {
+            width: 71%;
+            height: 25px;
+            padding: 2px;
+        }
+
+        button {
+            width: 100px;
+            height: 40px;
+            background-color: #009aff;
+            border-style: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .add:hover {
+            background-color: rgb(4, 4, 82);
+        }
+
+        /* css cho bảng thông tin */
+        main {
+            width: 90vw;
+        }
+
+        caption {
+            color: red;
+            font-size: 20pt;
+            font-weight: bold;
+            line-height: 40px;
+        }
+
+        table {
+            border: 2px solid black;
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        thead>tr {
+            font-size: 15pt;
+            font-weight: bold;
+        }
+        th {
+            border: 2px solid black;
+            height: 40px;
+            line-height: 100%;
+            font-size: 20px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+        .th_maphieunhap {
+            width: 10%;
+        }
+        .th_tennguoigiaohang {
+            width: 35%;
+        }
+        .th_diadiemkho {
+            width: 20%;
+        }
+        .th_thucnhap {
+            width: 10%;
+        }
+        .th_tongtien {
+            width: 10%;
+        }
+        .th_chinhsua {
+            width: 9%
+        }
+        .th_xoa {
+            width: 6%;
+        }
+        td {
+            border: 2px solid black;
+            height: 40px;
+            line-height: 100%;
+            font-size: 20px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .ma_nhap_xoa {
+            background-color: transparent; 
+            color: rgb(0, 140, 255); 
+            font-weight: bold;
+        }
+
+        .ma_nhap_xoa-icon:hover {
+            opacity: 0.5;
+        }
+
+        .ma_nhap_chinh_sua-icon:hover {
+            color: rgb(4, 4, 82);
+        }
+
+    </style>
+</head>
+<body>
+    <a href="/">Trở về trang chủ</a>
+    <a href="/nhapchitiet">Sang phiếu nhập chi tiết</a>
+    <form class="search" action="/searchNhap" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Tìm phiếu nhập</legend>
+            <div>
+                <label for="ma_phieu_nk">Chọn mã phiếu nhập</label>
+                <!-- <input type="text" maxlength="10" id="ma_phieu_nk" name="ma_phieu_nk" placeholder="Nhập mã hàng hóa cần tìm"> -->
+                <select name="ma_phieu_nk" id="ma_phieu_nk">
+                    <option value="">-----Hãy chọn-----</option>
+                    {% for nhap in nhap_list %}
+                    <option value={{nhap.ma_phieu_nk}}>{{nhap.ma_phieu_nk}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <span>
+                <button type="submit">Tìm kiếm</button>
+            </span>
+        </fieldset>
+    </form>
+    <form class="insert" action="/addNhap" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="insert-frame">
+            <legend>Thêm thông tin Phiếu nhập</legend>
+            <div class="receipt-id">
+                <label for="ma_phieu_nk">Mã phiếu nhập</label>
+                <input type="text" name="ma_phieu_nk" placeholder="Nhập mã theo dạng PNHAP*****" value="PNHAP" minlength="10" maxlength="10">
+            </div>
+            <div class="shipper-id">
+                <label for="ma_nguoi_giao_hang">Mã người giao hàng</label>
+                <select name="ma_nguoi_giao_hang" id="ma_nguoi_giao_hang">
+                    <option value="">-----Hãy chọn-----</option>
+                    {% for ngh in nguoigiaohang_list %}
+                        <option value={{ngh.ma_ngh}}>{{ngh.ma_ngh}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="ware-id">
+                <label for="ma_kho">Mã kho</label>
+                <select name="ma_kho" id="ma_kho">
+                    <option value="">-----Hãy chọn-----</option>
+                    {% for kho in kho_list %}
+                        <option value={{kho.ma_kho}}>{{kho.ma_kho}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <span>
+                <button type="submit" class="add">Thêm</button>
+            </span>
+        </fieldset>
+    </form>
+    <main>
+        <h3 style="font-size: 20pt; font-weight: bold;">(*) Nhấp vào mã phiếu để xem chi tiết</h3>
+        <table>
+            <caption>Thông tin về Phiếu nhập</caption>
+            <thead>
+                <tr>
+                    <th class="th_maphieunhap">Mã phiếu nhập</th>
+                    <th class="th_tennguoigiaohang">Tên người giao hàng</th>
+                    <th class="th_diadiemkho">Địa điểm kho</th>
+                    <th class="th_thucnhap">Thực nhập</th>
+                    <th class="th_tongtien">Tổng tiền</th>
+                    <th class="th_chinhsua">Chỉnh sửa</th>
+                    <th class="th_xoa">Xóa</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for nhap in nhap_list %}
+                    <tr>
+                        <td><a href="/nhap/{{nhap.ma_phieu_nk}}/chitiet/" style="color: rgb(0, 123, 255);">{{nhap.ma_phieu_nk}}</a></td>
+                        <td class="ma_ngh_trong_nhap">{{nhap.ma_nguoi_giao_hang}}</td>
+                        <td class="ma_kho_trong_nhap">{{nhap.ma_kho}}</td>
+                        <td>{{nhap.thuc_nhap}}</td>
+                        <td>{{nhap.tong_cong}}</td>
+                        <td>
+                            <a href="/nhap/{{nhap.ma_phieu_nk}}" style="color: rgb(0, 140, 255);">
+                                <i class="fa-solid fa-pen ma_nhap_chinh_sua-icon"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <form class="delete" action="/deleteNhap" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <label for="ma_nhap_xoa"></label>
+                                <button name="ma_nhap_xoa" class="ma_nhap_xoa" value="{{nhap.ma_phieu_nk}}">
+                                    <i class="fa-solid fa-trash ma_nhap_xoa-icon"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+    <div style="display: none;">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} id="check" {% endif %}>{{message}}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <script>
+        let thong_tin_kho = document.getElementsByClassName('ma_kho_trong_nhap');
+        for (let i = 0; i < thong_tin_kho.length; i++) {
+            let phan_tu_kho = thong_tin_kho[i].textContent;
+            let ma_kho = (phan_tu_kho.slice(11));
+            thong_tin_kho[i].textContent = ma_kho;
+        }
+        
+        let thong_tin_nguoi_giao_hang = document.getElementsByClassName('ma_ngh_trong_nhap');
+        for (let i = 0; i < thong_tin_nguoi_giao_hang.length; i++) {
+            let phan_tu_nguoi_giao_hang = thong_tin_nguoi_giao_hang[i].textContent;
+            let Ma_nguoi_giao_hang = (phan_tu_nguoi_giao_hang.slice(11));
+            thong_tin_nguoi_giao_hang[i].textContent = Ma_nguoi_giao_hang;
+        }
+        
+        let checkExist = document.getElementById('check').textContent;
+        if (checkExist == 'Mã phiếu nhập kho đã tồn tại') {
+            alert('Mã phiếu nhập kho đã tồn tại.\nVui lòng nhập lại!');
+        }
+        else if (checkExist == 'Mã kho không tồn tại') {
+            alert('Mã kho không tồn tại.\nVui lòng nhập lại!');
+        }
+        else if (checkExist == 'Mã người giao hàng không tồn tại') {
+            alert('Mã người giao hàng không tồn tại.\nVui lòng nhập lại!');
+        }
+        else if (checkExist == 'Mã phiếu nhập kho sai định dạng') {
+            alert('Mã phiếu nhập kho sai định dạng.\nVui lòng nhập lại!\nVí dụ: PNHAP00001');
+        }
+    </script>
+</body>
+</html>

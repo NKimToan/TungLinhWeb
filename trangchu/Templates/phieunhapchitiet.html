@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Nhập chi tiết</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;   
+        }
+
+        .search {
+            width: 40vw;
+            height: 150px;
+            text-align: center;
+        }
+
+        .search>fieldset {
+            border: 1px solid black;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .search>fieldset>div {
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        /* .search>fieldset>div>input {
+            width: 70%;
+        } */
+
+        .search>fieldset>div>select {
+            width: 70%;
+        }
+
+        /* css cho bảng nhập liệu */
+
+        .insert {
+            width: 40vw;
+            height: 220px;
+            text-align: center;
+        }
+
+        .insert-frame {
+            border: 1px solid black;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        legend {
+            font-size: 35px;
+        }
+
+        .receipt-id-detail, .product-id, .number, .money {
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        .number>input, .money>input {
+            width: 70%;
+            height: 20px;
+        }
+        
+        .receipt-id-detail>select,
+        .product-id>select {
+            width: 71%;
+            height: 25px;
+            padding: 2px;
+        }
+
+        button {
+            width: 100px;
+            height: 40px;
+            background-color: #009aff;
+            border-style: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .add:hover {
+            background-color: rgb(4, 4, 82);
+        }
+
+        /* css cho bảng thông tin */
+        main {
+            width: 90vw;
+        }
+
+        caption {
+            color: red;
+            font-size: 20pt;
+            font-weight: bold;
+            line-height: 40px;
+        }
+
+        table {
+            border: 2px solid black;
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        thead>tr {
+            font-size: 15pt;
+            font-weight: bold;
+        }
+        th {
+            border: 2px solid black;
+            height: 40px;
+            line-height: 100%;
+            font-size: 20px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+        .th_maphieunhap {
+            width: 21%;
+        }
+        .th_tenhanghoa {
+            width: 21%;
+        }
+        .th_soluong {
+            width: 15%;
+        }
+        .th_thanhtien {
+            width: 15%;
+        }
+        .th_chinhsua {
+            width: 10%;
+        }
+        .th_xoa {
+            width: 8%;
+        }
+        td {
+            border: 2px solid black;
+            height: 40px;
+            line-height: 100%;
+            font-size: 20px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .note {
+            width: 80vw;
+            color: red;
+            font-weight: bold;
+            font-size: 30px;
+            margin-top: 20px;
+        }
+
+        .id_xoa {
+            background-color: transparent; 
+            color: rgb(0, 140, 255); 
+            font-weight: bold;
+        }
+
+        .ma_nhap_chi_tiet_xoa-icon:hover {
+            opacity: 0.5;
+        }
+
+        .ma_nhap_chi_tiet_chinh_sua-icon:hover {
+            color: rgb(4, 4, 82);
+        }
+
+    </style>
+</head>
+<body>
+    <a href="/">Trở về trang chủ</a>
+    <a href="/nhap">Sang trang phiếu nhập</a>
+    <a href="/hanghoa">Sang trang hàng hóa</a>
+    <form class="search" action="/searchNhapchitiet" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Tìm phiếu nhập chi tiết</legend>
+            <div>
+                <label for="ma_phieu_nk">Chọn mã phiếu nhập</label>
+                <!-- <input type="text" name="ma_phieu_nk" placeholder="Nhập mã phiếu nhập cần tìm"> -->
+                <select name="ma_phieu_nk" id="ma_phieu_nk">
+                    <option value="">-----Hãy chọn-----</option>
+                    {% for nhap in nhap_list %}
+                    <option value="{{nhap.ma_phieu_nk}}">{{nhap.ma_phieu_nk}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <span>
+                <button type="submit">Tìm kiếm</button>
+            </span>
+        </fieldset>
+    </form>
+    <form class="insert" action="/addNhapchitiet" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="insert-frame">
+            <legend>Thêm thông tin Phiếu nhập chi tiết</legend>
+            <div class="receipt-id-detail">
+                <label for="ma_phieu_nhap_chi_tiet">Mã phiếu nhập</label>
+                <select name="ma_phieu_nhap_chi_tiet" id="ma_phieu_nhap_chi_tiet">
+                    <option value="">-----Hãy chọn-----</option>
+                    {% for nhap in nhap_list %}
+                        <option value={{nhap.ma_phieu_nk}}>{{nhap.ma_phieu_nk}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="product-id">
+                <label for="ma_hh">Mã hàng hóa</label>
+                <select name="ma_hh" id="ma_hh">
+                    <option value="">-----Hãy chọn-----</option>
+                    {% for hang in hanghoa_list %}
+                        <option value={{hang.ma_hh}}>{{hang.ma_hh}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="number">
+                <label for="so_luong">Số lượng</label>
+                <input type="number" name="so_luong" placeholder="Số lượng nhập">
+            </div>
+            <span>
+                <button type="submit" class="add">Thêm</button>
+            </span>
+        </fieldset>
+    </form>
+    <main>
+        <table>
+            <caption>Thông tin về Phiếu nhập chi tiết</caption>
+            <thead>
+                <tr>
+                    <th class="th_maphieunhap">Mã phiếu nhập</th>
+                    <th class="th_tenhanghoa">Tên hàng hóa</th>
+                    <th class="th_soluong">Số lượng</th>
+                    <th class="th_thanhtien">Thành tiền</th>
+                    <th class="th_chinhsua">Chỉnh sửa</th>
+                    <th class="th_xoa">Xóa</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for phieu in phieunhapchitiet_list %}
+                    <tr>
+                        <td class="ma_phieu_nhap_kho">{{phieu.ma_phieu_nk}}</td>
+                        <td class="ten_hang_hoa">{{phieu.ma_hh}}</td>
+                        <td>{{phieu.so_luong}}</td>
+                        <td>{{phieu.thanh_tien}}</td>
+                        <td>
+                            <a href="/nhapchitiet/{{phieu.id}}" style="color: rgb(0, 140, 255);">
+                                <i class="fa-solid fa-pen ma_nhap_chi_tiet_chinh_sua-icon"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <form class="delete" action="/deleteNhapchitiet" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div style="display: none">
+                                    {% for nhap in nhap_list%}
+                                        <label for="mpn_chi_tiet"></label>
+                                        <input name="mpn_chi_tiet" class="mpn_chi_tiet" value="{{nhap.ma_phieu_nk}}">{{nhap.ma_phieu_nk}}</input>
+                                    {% endfor %}
+                                </div>
+                                <label for="id_xoa"></label>
+                                <button name="id_xoa" class="id_xoa" value="{{phieu.id}}">
+                                    <i class="fa-solid fa-trash ma_nhap_chi_tiet_xoa-icon"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+    <div style="display: none;">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} id="check" {% endif %}>{{message.tags}}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <script>
+        let thong_tin_nhap_chi_tiet = document.getElementsByClassName('ma_phieu_nhap_kho');
+        for (let i = 0; i < thong_tin_nhap_chi_tiet.length; i++) {
+            let phan_tu_nhap_chi_tiet = thong_tin_nhap_chi_tiet[i].textContent;
+            let ma_phieu_nhap_chi_tiet = (phan_tu_nhap_chi_tiet.split(','))[0];
+            thong_tin_nhap_chi_tiet[i].textContent = ma_phieu_nhap_chi_tiet;
+        }
+        let thong_tin_hang_hoa = document.getElementsByClassName('ten_hang_hoa');
+        for (let i = 0; i < thong_tin_hang_hoa.length; i++) {
+            let phan_tu_nhap_chi_tiet = thong_tin_hang_hoa[i].textContent;
+            let ten_phieu_nhap_chi_tiet = (phan_tu_nhap_chi_tiet.slice(11));
+            let hien_thi_ten = (ten_phieu_nhap_chi_tiet.split(","))[0];
+            thong_tin_hang_hoa[i].textContent = hien_thi_ten;
+        }
+        let checkExist = document.getElementById('check').textContent;
+        if (checkExist == 'error') {
+            alert('Đã xảy ra lỗi.\nVui lòng nhập lại!');
+        }
+    </script>
+</body>
+</html>

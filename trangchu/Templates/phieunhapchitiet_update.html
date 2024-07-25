@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Nhập chi tiết-Chỉnh sửa</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;   
+        }
+
+        /* css cho bảng nhập liệu */
+        a {
+            text-decoration: none;
+        }
+        .update {
+            width: 40vw;
+            height: 220px;
+            text-align: center;
+        }
+
+        .update-frame {
+            border: 1px solid black;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        legend {
+            font-size: 35px;
+        }
+
+        .receipt-id-detail,
+        .id,
+        .product-id, 
+        .number {
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        .receipt-id-detail>input,
+        .id>input,
+        .product-id>input,
+        .number>input {
+            width: 70%;
+            height: 20px;
+        }
+
+        button {
+            width: 120px;
+            height: 40px;
+            background-color: #009aff;
+            border-style: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        button:hover {
+            background-color: rgb(4, 4, 82);
+        }
+    </style>
+</head>
+<body>
+    <a href="/phieunhapchitiet">Trở về phiếu nhập chi tiết</a>
+    <form class="update" action="/changeNhapchitiet" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="update-frame">
+            <legend>Chỉnh sửa phiếu nhập chi tiết</legend>
+            <div class="id">
+                <label for="id">Số thứ tự</label>
+                {% for nhap in phieunhapchitiet_list %}
+                    <input id="id" name="id" value="{{nhap.id}}">
+                {% endfor %}
+            </div>
+            <div class="product-id">
+                <label for="ma_hh">Mã hàng hóa</label>
+                {% for hang in phieunhapchitiet_list %}
+                    <input name="ma_hh" id ="ma_hh" value="{{hang.ma_hh|stringformat:"s"|slice:":10"}}">
+                {% endfor %}
+            </div>
+            <div class="number">
+                <label for="so_luong">Số lượng</label>
+                <input type="number" name="so_luong" placeholder="Số lượng nhập">
+            </div>
+            <span>
+                <button type="submit">Chỉnh sửa</button>
+            </span>
+        </fieldset>
+    </form>
+</body>
+</html>

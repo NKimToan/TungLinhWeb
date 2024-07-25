@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kho-Chỉnh sửa</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;   
+        }
+
+        /* css cho bảng nhập liệu */
+
+        .update {
+            width: 40vw;
+            height: 170px;
+            text-align: center;
+        }
+
+        .update-frame {
+            border: 1px solid black;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        legend {
+            font-size: 35px;
+        }
+
+        .ware-id {
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        .ware-address {
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        .ware-id>input, .ware-address>input {
+            width: 80%;
+            height: 20px;
+        }
+
+        button {
+            width: 100px;
+            height: 40px;
+            background-color: #009aff;
+            border-style: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        button:hover {
+            background-color: #062e49;
+        }
+
+        select {
+            width: 81%;
+            padding: 1px 2px 1px 2px;
+        }
+    </style>
+</head>
+<body>
+    <a href="/kho">Trở về kho</a>
+    <form class="update" action="/changeKho" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="update-frame">
+            <legend>Chỉnh sửa thông tin kho</legend>
+            <div class="ware-id">
+                <label for="ma_kho">Mã kho</label>
+                {% for kho in kho_list%}
+                    <input id="ma_kho" name="ma_kho" value="{{kho.ma_kho}}">
+                {% endfor %}
+            </div>
+            <div class="ware-address">
+                <label for="dia_diem_kho">Địa điểm kho</label>
+                <input type="text" name="dia_diem_kho" placeholder="Nhập địa chỉ kho mới">
+            </div>
+            <span>
+                <button type="submit">Cập nhật</button>
+            </span>
+        </fieldset>
+    </form>
+</body>
+</html>

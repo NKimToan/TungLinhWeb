@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Kho</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;   
+        }
+
+        .search {
+            width: 40vw;
+            height: 150px;
+            text-align: center;
+        }
+
+        .search>fieldset {
+            border: 1px solid black;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .search>fieldset>div {
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        /* .search>fieldset>div>input {
+            width: 70%;
+        } */
+
+        .search>fieldset>div>select {
+            width: 80%;
+        }
+
+        /* css cho bảng nhập liệu */
+
+        .insert {
+            width: 40vw;
+            height: 170px;
+            text-align: center;
+        }
+
+        .insert-frame {
+            border: 1px solid black;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        legend {
+            font-size: 35px;
+        }
+
+        .ware-id {
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        .ware-address {
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        .ware-id>input, .ware-address>input {
+            width: 80%;
+            height: 20px;
+        }
+
+        button {
+            width: 100px;
+            height: 40px;
+            background-color: #009aff;
+            border-style: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .add:hover {
+            background-color: #062e49;
+        }
+
+        /* css cho bảng thông tin */
+        main {
+            width: 80vw;
+        }
+
+        caption {
+            color: red;
+            font-size: 20pt;
+            font-weight: bold;
+            line-height: 40px;
+        }
+
+        table {
+            border: 2px solid black;
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        thead>tr {
+            font-size: 15pt;
+            font-weight: bold;
+        }
+        th {
+            border: 2px solid black;
+            height: 40px;
+            line-height: 100%;
+            font-size: 20px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+        .th_makho {
+            width: 25%;
+        }
+        .th_diadiemkho {
+            width: 50%;
+        }
+        .th_chinhsuakho {
+            width: 15%;
+        }
+        .th_xoakho {
+            width: 10%;
+        }
+        td {
+            border: 2px solid black;
+            height: 40px;
+            line-height: 100%;
+            font-size: 20px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .ma_kho_xoa {
+            background-color: transparent; 
+            color: rgb(0, 140, 255); 
+            font-weight: bold;
+        }
+
+        .ma_kho_xoa-icon:hover {
+            opacity: 0.5;
+        }
+        
+        .ma_kho_chinh_sua-icon:hover {
+            color: rgb(4, 4, 82);
+        }
+        
+
+    </style>
+</head>
+<body>
+    <a href="/">Trở về trang chủ</a>
+    <form class="search" action="/searchKho" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Tìm kho</legend>
+            <div>
+                <label for="ma_kho">Chọn mã kho</label>
+                <!-- <input type="text" maxlength="10" id="ma_kho" name="ma_kho" placeholder="Nhập mã kho cần tìm"> -->
+                <select name="ma_kho" id="ma_kho">
+                    <option value="">-----Hãy chọn-----</option>
+                    {% for kho in kho_list %}
+                    <option value={{kho.ma_kho}}>{{kho.ma_kho}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <span>
+                <button type="submit">Tìm kiếm</button>
+            </span>
+        </fieldset>
+    </form>
+    <form class="insert" action="/addKho" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="insert-frame">
+            <legend>Thêm thông tin kho</legend>
+            <div class="ware-id">
+                <label for="ma_kho">Mã kho</label>
+                <input type="text" name="ma_kho" maxlength="10" minlength="10" placeholder="Nhập mã kho theo dạng KHO********" value="KHO">
+            </div>
+            <div class="ware-address">
+                <label for="dia_diem_kho">Địa điểm kho</label>
+                <input type="text" name="dia_diem_kho" placeholder="Nhập địa chỉ kho">
+            </div>
+            <span>
+                <button type="submit" class="add">Thêm</button>
+            </span>
+        </fieldset>
+    </form>
+    <main>
+        <table>
+            <caption>Thông tin về kho</caption>
+            <thead>
+                <tr>
+                    <th class="th_makho">Mã kho</th>
+                    <th class="th_diadiemkho">Địa điểm kho</th>
+                    <th class="th_chinhsuakho">Chỉnh sửa</th>
+                    <th class="th_xoa">Xóa</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for kho in kho_list %}
+                    <tr>
+                        <td>{{kho.ma_kho}}</td>
+                        <td>{{kho.dia_diem_kho}}</td>
+                        <td>
+                            <a href="/kho/{{kho.ma_kho}}" style="color: rgb(0, 140, 255);">
+                                <i class="fa-solid fa-pen ma_kho_chinh_sua-icon"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <form class="delete" action="/deleteKho" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <label for="ma_kho_xoa"></label>
+                                <button name="ma_kho_xoa" class="ma_kho_xoa" value="{{kho.ma_kho}}">
+                                    <i class="fa-solid fa-trash ma_kho_xoa-icon"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+    <div style="display: none;">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} id="check" {% endif %}>{{message}}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <script>
+        let checkExist = document.getElementById('check').textContent;
+        if (checkExist == 'Mã kho đã tồn tại') {
+            alert('Mã kho đã tồn tại. \nVui lòng nhập lại!');
+        }
+        else if (checkExist == 'Mã kho sai định dạng') {
+            alert('Mã kho sai định dạng. \nVui lòng nhập lại! \nVí dụ: KHO0000001');
+        }
+        else if (checkExist == 'Mã kho đang được sử dụng trong phiếu nhập') {
+            alert('Mã kho đang được sử dụng trong phiếu nhập.\nVui lòng xóa phiếu nhập trước!')
+        }
+    </script>
+
+</body>
+</html>

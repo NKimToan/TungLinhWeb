@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Hàng hóa-Tìm kiếm</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;   
+        }
+
+        /* css cho bảng thông tin */
+        main {
+            width: 90vw;
+        }
+
+        caption {
+            color: red;
+            font-size: 20pt;
+            font-weight: bold;
+            line-height: 40px;
+        }
+
+        table {
+            border: 2px solid black;
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        thead>tr {
+            font-size: 15pt;
+            font-weight: bold;
+        }
+        th {
+            border: 2px solid black;
+            height: 40px;
+            line-height: 100%;
+            font-size: 20px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+        .th_mahanghoa {
+            width: 20%;
+        }
+        .th_tenhanghoa {
+            width: 50%;
+        }
+        .th_soluong {
+            width: 10%;
+        }
+        .th_dongia {
+            width: 20%;
+        }
+        td {
+            border: 2px solid black;
+            height: 40px;
+            line-height: 100%;
+            font-size: 20px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <a href="/">Trở về trang chủ</a>
+    <a href="/hanghoa">Trở về trang hàng hóa</a>
+    <main>
+        <table>
+            <caption>Thông tin Hàng hóa</caption>
+            <thead>
+                <tr>
+                    <th class="th_mahanghoa">Mã hàng hóa</th>
+                    <th class="th_tenhanghoa">Tên hàng hóa</th>
+                    <th class="th_soluong">Số lượng</th>
+                    <th class="th_dongia">Đơn giá</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hang in hanghoa_list %}
+                    <tr>
+                        <td>{{hang.ma_hh}}</td>
+                        <td>{{hang.ten_hh}}</td>
+                        <td>{{hang.so_luong}}</td>
+                        <td>{{hang.don_gia}} vnđ/chiếc</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

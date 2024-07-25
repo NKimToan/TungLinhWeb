@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin phiếu nhập chi tiết</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;   
+        }
+
+        /* css cho bảng thông tin */
+
+        .content {
+            width: 70vw;
+        }
+        
+        caption {
+            color: red;
+            font-size: 20pt;
+            font-weight: bold;
+            line-height: 40px;
+        }
+        
+        table {
+            border: 2px solid black;
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        thead>tr {
+            font-size: 15pt;
+            font-weight: bold;
+        }
+        th {
+            border: 2px solid black;
+            height: 40px;
+            line-height: 100%;
+            font-size: 20px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+        .th_mahanghoa {
+            width: 20%;
+        }
+        .th_tenhanghoa {
+            width: 40%;
+        }
+        .th_soluong {
+            width: 15%;
+        }
+        .th_thanhtien {
+            width: 25%;
+        }
+        td {
+            border: 2px solid black;
+            height: 40px;
+            line-height: 100%;
+            font-size: 20px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .note {
+            width: 80vw;
+            color: red;
+            font-weight: bold;
+            font-size: 30px;
+            margin-top: 20px;
+        }
+
+        .id_xoa {
+            background-color: transparent; 
+            color: rgb(0, 140, 255); 
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <a href="/">Trở về trang chủ</a>
+    <a href="/nhap">Trở về phiếu nhập</a>
+    <div class="content">
+
+        <table>
+            {% for nhap in nhap_list %}
+                <caption>Thông tin chi tiết về phiếu: {{nhap.ma_phieu_nk}}</caption>
+            {% endfor %}
+            <thead>
+                <tr>
+                    <th class="th_mahanghoa">Mã hàng hóa</th>
+                    <th class="th_tenhanghoa">Tên hàng hóa</th>
+                    <th class="th_soluong">Số lượng</th>
+                    <th class="th_thanhtien">Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for phieu in phieunhapchitiet_list %}
+                    <tr>
+                        <td class="ma_hang_hoa">{{phieu.ma_hh}}</td>
+                        <td class="ten_hang_hoa">{{phieu.ma_hh}}</td>
+                        <td>{{phieu.so_luong}}</td>
+                        <td>{{phieu.thanh_tien}}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2" style="background-color: aqua;">Tổng cộng</td>
+                    {% for nhap in nhap_list %}
+                        <td style="background-color: aquamarine;">{{nhap.thuc_nhap}}</td>
+                        <td style="background-color: aquamarine;">{{nhap.tong_cong}}</td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        let thong_tin_hang_hoa = document.getElementsByClassName('ma_hang_hoa');
+        for (let i = 0; i < thong_tin_hang_hoa.length; i++) {
+            let phan_tu_nhap_chi_tiet = thong_tin_hang_hoa[i].textContent;
+            let ma_phieu_nhap_chi_tiet = (phan_tu_nhap_chi_tiet.split(','))[0];
+            thong_tin_hang_hoa[i].textContent = ma_phieu_nhap_chi_tiet;
+        }
+
+        let ten_hang_hoa = document.getElementsByClassName('ten_hang_hoa');
+        for (let i = 0; i < ten_hang_hoa.length; i++) {
+            let ten_hang_hoa_chi_tiet = ten_hang_hoa[i].textContent;
+            let ten_phieu_nhap_chi_tiet = (ten_hang_hoa_chi_tiet.split(','))[1];
+            ten_hang_hoa[i].textContent = ten_phieu_nhap_chi_tiet;
+        }
+
+
+        let checkExist = document.getElementById('check').textContent;
+    </script>
+</body>
+</html>

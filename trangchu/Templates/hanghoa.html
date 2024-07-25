@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Hàng hóa</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;   
+        }
+
+        .search {
+            width: 40vw;
+            height: 150px;
+            text-align: center;
+        }
+
+        .search>fieldset {
+            border: 1px solid black;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .search>fieldset>div {
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        .search>fieldset>div>input {
+            width: 70%;
+        }
+/* 
+        .search>fieldset>div>select {
+            width: 70%;
+        } */
+
+        /* css cho bảng nhập liệu */
+
+        .insert {
+            width: 40vw;
+            height: 220px;
+            text-align: center;
+        }
+
+        .insert-frame {
+            border: 1px solid black;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        legend {
+            font-size: 35px;
+        }
+
+        .product-id, 
+        .product-name, 
+        .unit-price {
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        .product-id>input, 
+        .product-name>input, 
+        .unit-price>input {
+            width: 70%;
+            height: 20px;
+        }
+
+        button {
+            width: 100px;
+            height: 40px;
+            background-color: #009aff;
+            border-style: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .add:hover {
+            background-color: #062e49;
+        }
+
+        /* css cho bảng thông tin */
+        main {
+            width: 90vw;
+        }
+
+        caption {
+            color: red;
+            font-size: 20pt;
+            font-weight: bold;
+            line-height: 40px;
+        }
+
+        table {
+            border: 2px solid black;
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        thead>tr {
+            font-size: 15pt;
+            font-weight: bold;
+        }
+        th {
+            border: 2px solid black;
+            height: 40px;
+            line-height: 100%;
+            font-size: 20px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+        .th_mahanghoa {
+            width: 20%;
+        }
+        .th_tenhanghoa {
+            width: 37%;
+        }
+        .th_soluong {
+            width: 10%;
+        }
+        .th_dongia {
+            width: 15%;
+        }
+        .th_chinhsua {
+            width: 10%;
+        }
+        .th_xoa {
+            width: 8%;
+        }
+        td {
+            border: 2px solid black;
+            height: 40px;
+            line-height: 100%;
+            font-size: 20px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .note {
+            width: 80vw;
+            color: red;
+            font-weight: bold;
+            font-size: 30px;
+            margin-top: 20px;
+        }
+
+        .ma_hang_hoa_xoa {
+            background-color: transparent; 
+            color: rgb(0, 140, 255); 
+            font-weight: bold;
+        }
+
+        .ma_hang_hoa_xoa-icon:hover {
+            opacity: 0.5;
+        }
+
+        .ma_hang_hoa_chinh_sua-icon:hover {
+            color: rgb(4, 4, 82);
+        }
+
+    </style>
+</head>
+<body>
+    <a href="/">Trở về trang chủ</a>
+    <a href="/nhapchitiet">Sang trang phiếu nhập chi tiết</a>
+    <form class="search" action="/searchHanghoa" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Tìm hàng hóa</legend>
+            <div>
+                <label for="ten_hh">Chọn mã hàng hóa</label>
+                <input type="text" id="ten_hh" name="ten_hh" placeholder="Nhập tên hàng hóa cần tìm">
+                <!-- <select name="ten_hh" id="ten_hh">
+                    <option value="">-----Hãy chọn-----</option>
+                    {% for hang in hanghoa_list %}
+                        <option value={{hang.ten_hh}}>{{hang.ten_hh}}</option>
+                    {% endfor %}
+                </select> -->
+            </div>
+            <span>
+                <button type="submit">Tìm kiếm</button>
+            </span>
+        </fieldset>
+    </form>
+    <form class="insert" action="/addHanghoa" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="insert-frame">
+            <legend>Thêm thông tin Hàng hóa</legend>
+            <div class="product-id">
+                <label for="ma_hh">Mã hàng hóa</label>
+                <input type="text" name="ma_hh" placeholder="Nhập mã hàng hóa theo dạng XDAP/XMAY" minlength="10" maxlength="10">
+            </div>
+            <div class="product-name">
+                <label for="ten_hh">Tên hàng hóa</label>
+                <input type="text" name="ten_hh" placeholder="Nhập tên hàng hóa" maxlength="50">
+            </div>
+            <div class="unit-price">
+                <label for="don_gia">Đơn giá</label>
+                <input type="number" name="don_gia" placeholder="Đơn giá hàng hóa">
+            </div>
+            <span>
+                <button type="submit" class="add">Thêm</button>
+            </span>
+        </fieldset>
+    </form>
+    <main>
+        <table>
+            <caption>Thông tin Hàng hóa</caption>
+            <thead>
+                <tr>
+                    <th class="th_mahanghoa">Mã hàng hóa</th>
+                    <th class="th_tenhanghoa">Tên hàng hóa</th>
+                    <th class="th_soluong">Số lượng</th>
+                    <th class="th_dongia">Đơn giá</th>
+                    <th class="th_chinhsua">Chỉnh sửa</th>
+                    <th class="th_xoa">Xóa</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hang in hanghoa_list %}
+                    <tr>
+                        <td>{{hang.ma_hh}}</td>
+                        <td>{{hang.ten_hh}}</td>
+                        <td>{{hang.so_luong}}</td>
+                        <td>{{hang.don_gia}} vnđ/chiếc</td>
+                        <td>
+                            <a href="/hanghoa/{{hang.ma_hh}}" style="color: rgb(0, 140, 255);">
+                                <i class="fa-solid fa-pen ma_hang_hoa_chinh_sua-icon"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <form class="delete" action="/deleteHanghoa" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <label for="ma_hang_hoa_xoa"></label>
+                                <button name="ma_hang_hoa_xoa" class="ma_hang_hoa_xoa" value="{{hang.ma_hh}}">
+                                    <i class="fa-solid fa-trash ma_hang_hoa_xoa-icon"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+    <div style="display: none;">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} id="check" {% endif %}>{{message}}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <script>
+        let checkExist = document.getElementById('check').textContent;
+        if (checkExist == 'Mã hàng hóa đã tồn tại') {
+            alert('Mã hàng hóa đã tồn tại. \nVui lòng nhập lại!');
+        }
+        else if (checkExist == 'Mã hàng hóa sai định dạng') {
+            alert('Mã hàng hóa sai định dạng. \nVui lòng nhập lại! \nVí dụ: XMAYYAMAHA hoặc XDAPMARTIN');
+        }
+        else if (checkExist == 'Mã hàng hóa đang được sử dụng trong phiếu nhập chi tiết') {
+            alert('Mã hàng hóa đang được sử dụng trong phiếu nhập chi tiết. \nVui lòng xóa phiếu nhập chi tiết tương ứng trước!');
+        }
+    </script>
+</body>
+</html>
